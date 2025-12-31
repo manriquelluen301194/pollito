@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>El Real Broaster Peruano de NJ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+        
+        :root {
+            --yellow: #facc15;
+            --red: #ef4444;
+            --dark-bg: #0a0a0a;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .yellow-accent { color: var(--yellow); }
+        .bg-yellow-accent { background-color: var(--yellow); }
+        .text-red-accent { color: var(--red); }
+
+        .card-glass {
+            background: #121212;
+            border: 1px solid #222;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            overflow: hidden;
+        }
+        
+        @media (min-width: 1024px) {
+            .card-glass:hover {
+                border-color: var(--yellow);
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(250, 204, 21, 0.1);
+            }
+        }
+        
+        /* Contenedor de Imagen Optimizado para iOS */
+        .food-img-container {
+            position: relative;
+            width: 100%;
+            height: 200px; /* Altura fija para evitar saltos en iOS */
+            background-color: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .food-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.4s ease-in-out;
+            opacity: 0;
+            display: block;
+        }
+
+        .food-img-container img.loaded {
+            opacity: 1;
+        }
+
+        .whatsapp-btn {
+            background-color: #25d366;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .category-header {
+            border-left: 4px solid var(--yellow);
+            padding-left: 15px;
+        }
+
+        /* Shimmer loading mejorado */
+        .shimmer-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #111 25%, #222 50%, #111 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* iOS Form Fixes */
+        input, textarea {
+            font-size: 16px !important; /* Evita zoom automático al enfocar */
+            appearance: none;
+            -webkit-appearance: none;
+        }
+    </style>
+</head>
+<body class="pb-24">
+
+    <!-- Header con Contacto -->
+    <header class="p-4 flex flex-col md:flex-row justify-between items-center border-b border-yellow-accent/20 bg-black/95 backdrop-blur-md sticky top-0 z-50">
+        <div class="text-sm md:text-lg font-black italic yellow-accent tracking-tighter uppercase mb-2 md:mb-0">
+            ¿Y TÚ TE LO VAS A PERDER?
+        </div>
+        <div class="flex gap-4">
+            <a href="tel:+13292039467" class="text-white flex items-center gap-2 font-bold text-xs md:text-sm">
+                <i class="fas fa-phone yellow-accent"></i> 329 203 9467
+            </a>
+            <a href="tel:+18623357984" class="text-white flex items-center gap-2 font-bold text-xs md:text-sm">
+                <i class="fas fa-phone yellow-accent"></i> 862 335 7984
+            </a>
+        </div>
+    </header>
+
+    <!-- Branding -->
+    <div class="flex flex-col items-center py-8 px-4">
+        <div class="w-40 md:w-56 mb-6">
+            <img src="https://lh3.googleusercontent.com/d/11PdkeHujGwlI21x1Wctj-v5AjuN9Xh0b" alt="Logo" class="w-full h-auto drop-shadow-[0_0_15px_rgba(250,204,21,0.3)]" referrerpolicy="no-referrer">
+        </div>
+        <h1 class="text-center font-black uppercase italic leading-tight text-2xl md:text-4xl px-4">
+            <span class="text-red-accent">EL REAL</span> BROASTER PERUANO <span class="text-red-accent">NJ</span>
+        </h1>
+    </div>
+
+    <!-- Menú Principal -->
+    <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Listado -->
+        <div class="lg:col-span-8 order-2 lg:order-1">
+            <div id="menu-sections" class="space-y-12">
+                <!-- Dinámico -->
+            </div>
+        </div>
+
+        <!-- Carrito -->
+        <div class="lg:col-span-4 order-1 lg:order-2">
+            <div class="card-glass p-6 rounded-3xl sticky top-24 shadow-2xl border-yellow-accent/20">
+                <h2 class="text-xl font-black mb-6 flex items-center gap-3 italic uppercase">
+                    <i class="fas fa-shopping-basket yellow-accent"></i> Mi Pedido
+                </h2>
+                
+                <div id="cart-items" class="mb-6 space-y-3 max-h-[300px] overflow-y-auto">
+                    <p class="text-center text-zinc-500 text-sm italic py-4">Agrega tus platos favoritos...</p>
+                </div>
+
+                <div class="border-t border-zinc-800 pt-4 mb-6">
+                    <div class="flex justify-between text-2xl font-black">
+                        <span class="italic">TOTAL:</span>
+                        <span class="yellow-accent" id="cart-total">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <input type="text" id="cust-name" placeholder="Nombre" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-sm outline-none text-white">
+                    <input type="text" id="cust-address" placeholder="Dirección (NJ)" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-sm outline-none text-white">
+                    <input type="tel" id="cust-phone" placeholder="Teléfono" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-sm outline-none text-white">
+                    
+                    <button onclick="sendToWhatsApp()" class="whatsapp-btn w-full py-4 rounded-xl text-black font-black uppercase flex items-center justify-center gap-3 mt-4 active:scale-95 transition-transform">
+                        <i class="fab fa-whatsapp text-xl"></i> PEDIR POR WHATSAPP
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const menuData = {
+            "LOS BROASTERS": [
+                { id: 1, name: "EL DESPECHADO", price: 15.00, desc: "PECHO BROASTER + PAPAS + ENSALADA", img: "https://lh3.googleusercontent.com/d/1iGAYDCTjNJC7zpo1WOJ_QaJFOJhDy27m" },
+                { id: 2, name: "EL COJO", price: 15.00, desc: "PIERNA BROASTER + PAPAS + ENSALADA", img: "https://lh3.googleusercontent.com/d/15SV4eGC8k4gbEmxq-h0PwaNegn7D2mzF" },
+                { id: 3, name: "FOREVER-ALÓN", price: 15.00, desc: "ALA BROASTER + PAPAS + ENSALADA", img: "https://lh3.googleusercontent.com/d/1sPqrEiEQgPesDTkpRxwwgEtIgf8w_ZAe" }
+            ],
+            "LAS SALCHIPAPAS": [
+                { id: 4, name: "SALCHI FIEL", price: 13.00, desc: "PAPAS FRITAS + HOT DOG", img: "https://lh3.googleusercontent.com/d/1uMoSrxPszsSaOnzTMFe6SZ7Jo64RIBbT" },
+                { id: 5, name: "SALCHI DE CONO", price: 15.00, desc: "PAPAS + HOT DOG + HUEVO + PLÁTANO", img: "https://lh3.googleusercontent.com/d/1kbioFeGpQ3C0ntTu_ay6idnrNbJtIP4f" },
+                { id: 6, name: "SALCHI INFIEL", price: 15.00, desc: "PAPAS + HOT DOG + DOBLE HUEVO", img: "https://lh3.googleusercontent.com/d/1BWLFbTagKuZUOToKQHsDhzv-eB4EDhZj" }
+            ]
+        };
+
+        let cart = {};
+
+        function renderMenu() {
+            const container = document.getElementById('menu-sections');
+            container.innerHTML = Object.keys(menuData).map(category => `
+                <section>
+                    <h2 class="text-xl font-black mb-6 italic uppercase category-header">${category}</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        ${menuData[category].map(item => `
+                            <div class="card-glass rounded-2xl flex flex-col">
+                                <div class="food-img-container">
+                                    <div class="shimmer-overlay"></div>
+                                    <img src="${item.img}" 
+                                         alt="${item.name}" 
+                                         referrerpolicy="no-referrer"
+                                         onload="this.classList.add('loaded'); this.previousElementSibling.style.display='none';"
+                                         onerror="this.src='https://via.placeholder.com/400x250?text=Sabor+Peruano'; this.classList.add('loaded');">
+                                </div>
+                                <div class="p-4 flex flex-col flex-grow">
+                                    <h3 class="font-black text-lg italic uppercase">${item.name}</h3>
+                                    <p class="text-zinc-500 text-xs mb-4">${item.desc}</p>
+                                    <div class="flex items-center justify-between mt-auto">
+                                        <span class="text-red-accent font-black text-xl">$${item.price.toFixed(2)}</span>
+                                        <div class="flex items-center gap-3 bg-black border border-zinc-800 rounded-xl p-1">
+                                            <button onclick="updateQty(${item.id}, -1, '${item.name}', ${item.price})" class="w-8 h-8 flex items-center justify-center yellow-accent"> - </button>
+                                            <span id="qty-${item.id}" class="w-6 text-center font-bold text-sm">0</span>
+                                            <button onclick="updateQty(${item.id}, 1, '${item.name}', ${item.price})" class="w-8 h-8 flex items-center justify-center yellow-accent"> + </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+            `).join('');
+        }
+
+        function updateQty(id, delta, name, price) {
+            const current = cart[id] ? cart[id].qty : 0;
+            const newQty = Math.max(0, current + delta);
+            if (newQty === 0) delete cart[id];
+            else cart[id] = { name, price, qty: newQty };
+            document.getElementById(`qty-${id}`).innerText = newQty;
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            let total = 0;
+            const items = Object.values(cart);
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-center text-zinc-500 text-sm italic py-4">Agrega tus platos favoritos...</p>`;
+            } else {
+                container.innerHTML = items.map(item => {
+                    total += item.price * item.qty;
+                    return `<div class="flex justify-between text-sm bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
+                        <span><b>${item.qty}x</b> ${item.name}</span>
+                        <span class="yellow-accent">$${(item.price * item.qty).toFixed(2)}</span>
+                    </div>`;
+                }).join('');
+            }
+            totalEl.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function sendToWhatsApp() {
+            const name = document.getElementById('cust-name').value;
+            const address = document.getElementById('cust-address').value;
+            const phone = document.getElementById('cust-phone').value;
+            const items = Object.values(cart);
+            if (!name || !phone || items.length === 0) {
+                alert("Por favor completa los datos y selecciona platos.");
+                return;
+            }
+            let msg = `*PEDIDO: EL REAL BROASTER*%0A`;
+            items.forEach(i => msg += `🍗 *${i.qty}x* ${i.name}%0A`);
+            msg += `%0A💰 *TOTAL:* ${document.getElementById('cart-total').innerText}%0A`;
+            msg += `👤 *Nombre:* ${name}%0A📍 *Dirección:* ${address}%0A📞 *Tel:* ${phone}`;
+            window.open(`https://api.whatsapp.com/send?phone=13292039467&text=${msg}`, '_blank');
+        }
+
+        window.onload = renderMenu;
+    </script>
+</body>
+</html>
